@@ -20,10 +20,11 @@ void setup(){
 }//end "setup()"
  
 void loop(){
-  //Start of Program 
- 
+  
+    //Get readings from pin A0
     DHT.read11(dht_apin);
     
+   //Print data readings to remote terminal
     Serial.print("Current humidity = ");
     Serial.print(DHT.humidity);
     Serial.print("%  ");
