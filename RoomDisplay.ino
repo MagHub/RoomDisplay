@@ -32,9 +32,7 @@ void loop(){
     Serial.print(DHT.temperature); 
     Serial.println("C  ");
     
-    delay(5000);//Wait 5 seconds before accessing sensor again.
- 
-  //Fastest should be once every two seconds.
+    //Print data readings to LCD display
     lcd.setCursor(0, 0);
     lcd.print("Fukt = ");
     lcd.print(DHT.humidity);
@@ -43,6 +41,7 @@ void loop(){
     lcd.print("Temp = ");
     lcd.print(DHT.temperature); 
     lcd.print("C  ");;
-
+    
+    delay(5000);//Wait 5 seconds before comtinuing loop. Never wait less than 2 sec!
  
 }// end loop() 
