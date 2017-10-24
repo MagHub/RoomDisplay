@@ -1,47 +1,84 @@
 #include <dht.h>
 #include <LiquidCrystal.h>
-#define dht_apin A0 // Analog Pin sensor is connected to
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(2, 3, 8, 9, 10, 11); /// REGISTER SELECT PIN,ENABLE PIN,D4 PIN,D5 PIN, D6 PIN, D7 PIN
-
+#define dht_apin A0 // Analog Pin sensor is connected to
+ 
 dht DHT;
  
 void setup(){
-   // set up the LCD’s number of columns and rows:
+  
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(7, OUTPUT);
+  
+  digitalWrite(7, LOW);
+  
+  // set up the LCD’s number of columns and rows:
   lcd.begin(16, 2);
- 
- //Set up remote terminal
+  
   Serial.begin(9600);
   delay(500);//Delay to let system boot
   Serial.println("DHT11 Humidity & temperature Sensor\n\n");
-  delay(1000);//Wait before accessing Sensor
+  
+  //Wait before loop starts
+  delay(1000);
  
 }//end "setup()"
  
 void loop(){
-  
-    //Get readings from pin A0
-    DHT.read11(dht_apin);
-    
-   //Print data readings to remote terminal
-    Serial.print("Current humidity = ");
-    Serial.print(DHT.humidity);
-    Serial.print("%  ");
-    Serial.print("temperature = ");
-    Serial.print(DHT.temperature); 
-    Serial.println("C  ");
-    
-    //Print data readings to LCD display
-    lcd.setCursor(0, 0);
-    lcd.print("Fukt = ");
-    lcd.print(DHT.humidity);
-    lcd.print("%  ");
+  //Start of Program 
+     lcd.setCursor(0, 0);
+    lcd.print("Kommando?           ");
     lcd.setCursor(0, 1);
-    lcd.print("Temp = ");
-    lcd.print(DHT.temperature); 
-    lcd.print("C  ");;
+    lcd.print("                 ");
+            
+    Serial.println(digitalRead(A4));
+    delay(50);
     
-    delay(5000);//Wait 5 seconds before comtinuing loop. Never wait less than 2 sec!
+    if(digitalRead(A4) < 1) { 
+      
+     lcd.setCursor(0, 1);
+     lcd.print("Rumsdata.                 ");
+     delay(1000);
+     
+      Serial.print(digitalRead(A4));
+      Serial.println(digitalRead(A4));
+      DHT.read11(dht_apin);
+      /*
+      Serial.print("Current humidity = ");
+      Serial.print(DHT.humidity);
+      Serial.print("%  ");
+      Serial.print("temperature = ");
+      Serial.print(DHT.temperature); 
+      Serial.println("C  ");
+    */
+    
+ 
+      //Fastest should be once every two seconds.
+      lcd.setCursor(0, 0);
+      lcd.print("Fukt = ");
+      lcd.print(DHT.humidity);
+      lcd.print("%  ");
+      lcd.setCursor(0, 1);
+      lcd.print("Temp = ");
+      lcd.print(DHT.temperature); 
+      lcd.print("C  ");;
+
+      delay(10000);//Wait 10 seconds before accessing sensor again.
+    }
+ 
+ if(digitalRead(A5) < 1) { 
+      
+     lcd.setCursor(0, 1);
+     lcd.print("Disco-knappen!                 ");
+          
+     digitalWrite(7, HIGH);
+     delay(9000);
+     digitalWrite(7, LOW);
+    
+ }
+     
  
 }// end loop() 
